@@ -1,0 +1,52 @@
+if (isModule.toBoolean()) {
+    apply plugin: 'com.android.library'
+} else {
+    apply plugin: 'com.android.application'
+}
+android {
+    compileSdkVersion rootProject.ext.compileSdk
+    defaultConfig {
+        if (!isModule.toBoolean()) {
+            applicationId "com.wuwind.activity_chart"
+        }
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions.annotationProcessorOptions.arguments = [moduleName: project.getName()]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            if (isModule.toBoolean()) {
+                manifest.srcFile 'src/main/module/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:design:${rootProject.ext.support}"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.support}"
+    implementation "com.android.support:support-v4:${rootProject.ext.support}"
+    implementation "com.android.support:recyclerview-v7:${rootProject.ext.support}"
+    implementation "com.android.support:cardview-v7:${rootProject.ext.support}"
+
+    implementation project(':function:common')
+    annotationProcessor project(':zrouter:zrouter-compiler')
+    implementation project(':zrouter:zrouter-api')
+}

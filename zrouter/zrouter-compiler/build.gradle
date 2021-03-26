@@ -1,0 +1,17 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //google快速配置apt的库 auto-service可以帮我们把编译注解自动注册到项目中
+    implementation 'com.google.auto.service:auto-service:1.0-rc3'
+    implementation project(':zrouter:zrouter-annotation')
+    implementation 'com.squareup:javapoet:1.10.0' // APT生成文件的辅助类 javaPoet可以更方便的创建java文件
+//    implementation 'org.checkerframework:checker:2.1.10'//Android Studio错误。 Android Studio代码为此检查错误。
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+

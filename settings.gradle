@@ -1,0 +1,218 @@
+rootProject.name = 'CstFrame'
+include ':app'
+include ':business:fragment_home'
+include ':function:common'
+include ':zrouter:zrouter-compiler'
+include ':zrouter:zrouter-annotation'
+include ':zrouter:zrouter-api'
+include ':zrouter:arouter-compiler'
+include ':business:fragment_test'
+include ':business:fragment_test2'
+include ':business:activity_other'
+include ':business:fragment_mine'
+
+//include ':LeelenCore'
+//project(':LeelenCore').projectDir = new File('../LeelenCore/')
+//
+//include ':LitepalCore'
+//project(':LitepalCore').projectDir = new File('../LitepalCore/')
+//
+//include ':LeelenCommon'
+//project(':LeelenCommon').projectDir = new File('../LeelenCommon/')
+
+include ':business:register'
+include ':business:login'
+include ':business:register_api'
+//include ':business:mylibrary2'
+
+//include_with_api(':business:fragment_mine')
+include_with_api(':business:register')
+
+def include_with_api2(String moduleName) {
+    include(moduleName)
+    //获得工程根目录
+    String originDir = project(moduleName).projectDir
+    //制作的 SDK 工程的目录
+    String targetDir = "${originDir}_api"
+    //制作的 SDK 工程的名字
+    String sdkName = "${project(moduleName).name}_api"
+    System.out.println("-------------------------------------SDK name:" + sdkName)
+    //删除掉 SDK 工程目录 除了 iml
+    FileTree targetFiles = fileTree(targetDir)
+    targetFiles.exclude "*.iml"
+    targetFiles.each { File file ->
+        file.delete()
+    }
+    //从待制作SDK工程拷贝目录到 SDK工程 只拷贝目录
+    copy {
+        from originDir
+        into targetDir
+        //拷贝文件
+        include '**/*.api'
+        include '**/AndroidManifest.xml'
+        include 'api.gradle'
+        include 'build.gradle'
+    }
+    //读取实现模块的manifest并将package的值后加 .api 作为API工程的manifest package
+    FileTree manifests = fileTree(targetDir).include("**/AndroidManifest.xml")
+    manifests.each {
+        File file ->
+            def parser = new XmlParser().parse(file)
+            def node = parser.attribute('package')
+            parser.attributes().replace('package', "${node}.api")
+            new XmlNodePrinter(new PrintWriter(file)).print(parser)
+    }
+
+    //将api.gradle改为build.gradle
+    File build = new File(targetDir + "/api.gradle")
+    if (build.exists()) {
+        build.renameTo(new File(targetDir + "/build.gradle"))
+    }
+
+    // 将.api 文件改为 .java
+    FileTree files = fileTree(targetDir).include("**/*.api")
+    files.each {
+        File file ->
+            file.renameTo(new File(file.absolutePath.replace(".api", ".java")))
+    }
+    //加入 SDK工程
+    include ":business:" + "$sdkName"
+}
+
+def include_with_api(String moduleName) {
+    include(moduleName)
+    //获得工程根目录
+    String originDir = project(moduleName).projectDir
+    //制作的 SDK 工程的目录
+    String targetDir = "${originDir}_api"
+    //制作的 SDK 工程的名字
+    String sdkName = "${project(moduleName).name}_api"
+    System.out.println("-------------SDK name:" + sdkName)
+    //删除掉 SDK 工程目录 除了 iml
+    FileTree targetFiles = fileTree(targetDir)
+    targetFiles.exclude "*.iml"
+    targetFiles.each { File file ->
+        file.delete()
+    }
+    //从待制作SDK工程拷贝目录到 SDK工程 只拷贝目录
+    copy {
+        from originDir
+        into targetDir
+        //拷贝文件
+//        include '**/services/api/*.java'
+        include '**/services/api/**'
+//        include '**/services/api/**.java'
+        include '**/AndroidManifest.xml'
+//        include 'api.gradle'
+    }
+    //读取api创建实现类
+    FileTree apis = fileTree(originDir).include("**/services/api/**")
+    apis.each {
+        File file ->
+            System.out.println( "------file.name:"+file.name)
+            String lowercaseName = file.name.toLowerCase();
+//            if(!lowercaseName.contains("const") && !lowercaseName.contains("bean")) {
+//                String implDir = "${file.parentFile.parent}\\impl"
+//                String fileName = file.name.replace(".java", "Impl").replace(".api", "Impl")
+//                File newFile = new File(implDir, "${fileName}.java")
+//                if (!newFile.exists()) {
+//                    String pack = implDir.split("\\\\main\\\\java\\\\")[1].replaceAll("\\\\", ".")
+//                    File dirFile = new File(implDir)
+//                    if (!dirFile.exists())
+//                        dirFile.mkdirs()
+//                    new File(implDir, "${fileName}.java")
+//                            .withPrintWriter {
+//                                printWriter ->
+//                                    printWriter.println("package ${pack};")
+//                                    printWriter.println("import com.wuwind.zrouter_annotation.ZRoute;")
+//                                    printWriter.println("import com.wuwind.common.RouterPathConst;")
+//                                    printWriter.println("import ${pack[0..-5]}${file.getName()[0..-5]};\n")
+//                                    printWriter.println("@ZRoute(RouterPathConst.PATH_PROVIDER_MINE) // 数据交互的Provider，必须用接口SimpleName来注册")
+//                                    printWriter.println("public class ${fileName} implements ${file.getName()[0..-6]} {\n}")
+//                            }
+//                }
+//            }
+            println "${file.getAbsolutePath()[0..-5]}api"
+            if(lowercaseName.contains(".java"))
+                file.renameTo("${file.getAbsolutePath()[0..-5]}api")
+    }
+
+    //读取实现模块的manifest并将package的值后加 .api 作为API工程的manifest package
+    FileTree manifests = fileTree(targetDir).include("**/AndroidManifest.xml")
+    manifests.each {
+        File file ->
+            def parser = new XmlParser().parse(file)
+            def node = parser.attribute('package')
+            parser.attributes().replace('package', "${node}.api")
+            def nodes = parser.get('uses-permission')
+            for(def n:nodes) {
+                parser.remove(n)
+            }
+            parser.remove(parser.get('application'))
+            new XmlNodePrinter(new PrintWriter(file)).print(parser)
+    }
+
+    //将api.gradle改为build.gradle
+    File build = new File(targetDir + "/api.gradle")
+    if (build.exists()) {
+        build.renameTo(new File(targetDir + "/build.gradle"))
+    } else {
+        new File(targetDir + "/build.gradle").withWriter {writer ->
+            writer.writeLine("plugins {\n" +
+                    "    id 'com.android.library'\n" +
+                    "}\n" +
+                    "\n" +
+                    "android {\n" +
+                    "    compileSdkVersion rootProject.ext.compileSdk\n" +
+                    "    defaultConfig {\n" +
+                    "        minSdkVersion rootProject.ext.minSdk\n" +
+                    "        targetSdkVersion rootProject.ext.targetSdk\n" +
+                    "    }\n" +
+                    "}\n" +
+                    "\n" +
+                    "dependencies {\n" +
+                    "    implementation project(':zrouter:zrouter-annotation')\n" +
+                    "}")
+        }
+    }
+
+    // 将.api 文件改为 .java
+    FileTree files = fileTree(targetDir).include("**/*.api")
+    files.each {
+        File file ->
+            file.renameTo(new File(file.absolutePath.replace(".api", ".java")))
+    }
+
+    //加入build.gradle
+    File buildOrigin = new File(originDir + "/build.gradle")
+    if (buildOrigin.exists()) {
+        buildOrigin.withReader { reader ->
+            def lines = reader.readLines()
+            def start = false
+            def dependSDK = ":business:$sdkName"
+            def noInsert = false
+            println dependSDK
+            buildOrigin.withWriter{ writer ->
+                lines.each{ line ->
+                    if(line.startsWith('dependencies')) {
+                        start = true
+                    }
+                    if(start && line.contains(dependSDK)) {
+                        println line
+                        noInsert = true
+                    }
+                    if(start && line.contains("}")) {
+                        start = false
+                        if(!noInsert)
+                            writer.append("\timplementation project(':business:$sdkName')\r\n")
+                    }
+                    writer.append(line+"\r\n")
+                }
+            }
+        }
+    }
+
+    //加入 SDK工程
+    include ":business:" + "$sdkName"
+}
+
