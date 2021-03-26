@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.leelen.community.account.register.services.api.bean.UserBean;
-import com.leelen.community.account.register.services.api.common.RegisterUser;
+import com.make.register.services.api.bean.UserBean;
+import com.make.register.services.api.common.RegisterUser;
 import com.wuwind.common.RouterPathConst;
 import com.wuwind.cstframe.R;
 import com.wuwind.cstframe.ui.bottom.BottomAdapter;
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 R.color.home_tab_text_selector,
                 DrawableUtil.getStateListDrawable(this, R.mipmap.a_tabbar_tab1, R.mipmap.a_tabbar_home_p)));
         titleObjectList.add(new TabTitle(
-                RouterPathConst.PATH_FRAGMENT_TAB2,
+                RouterPathConst.PATH_ACTIVITY_REGISTER,
                 R.string.tag_name_tab2,
                 R.color.home_tab_text_selector,
                 DrawableUtil.getStateListDrawable(this, R.mipmap.a_tabbar_tab2, R.mipmap.a_tabbar_trade_p)));

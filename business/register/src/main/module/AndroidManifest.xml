@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
-        <activity android:name="com.make.account.register.RegisterActivity"></activity>
+        <activity android:name="com.make.register.ui.RegisterActivity"></activity>
     </application>
 
 </manifest>

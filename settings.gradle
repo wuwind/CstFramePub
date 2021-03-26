@@ -1,5 +1,6 @@
 rootProject.name = 'CstFrame'
 include ':app'
+include ':corelibrary'
 include ':business:fragment_home'
 include ':function:common'
 include ':zrouter:zrouter-compiler'

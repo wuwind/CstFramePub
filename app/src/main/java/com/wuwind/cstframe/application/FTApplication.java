@@ -1,11 +1,10 @@
 package com.wuwind.cstframe.application;
 
-import android.app.Application;
-
+import com.wuwind.common.MyApplication;
 import com.wuwind.zrouter_api.ZRouter;
 
 
-public class FTApplication extends Application {
+public class FTApplication extends MyApplication {
     @Override
     public void onCreate() {
         super.onCreate();
@@ -15,7 +14,7 @@ public class FTApplication extends Application {
 //            ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
 //        }
 //        ARouter.init(this); // 尽可能早，推荐在Application中初始化
-
+//        PreferencesUtils.init(this);
     }
 
     private boolean isDebug() {
