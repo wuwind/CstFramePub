@@ -55,13 +55,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-//    implementation project(':LeelenCore')// 核心库
-//    implementation project(':LitepalCore')//Litepal源码库
-//    implementation project(':LeelenCommon')//通用库
     implementation project(':function:common')//通用库
 
 //    implementation project(':business:mylibrary2')
     annotationProcessor project(':zrouter:zrouter-compiler')
 	implementation project(':business:register_api')
-	implementation project(':corelibrary')
+	implementation project(':utilcode')
 }
