@@ -14,7 +14,8 @@ public class PreferencesUtils {
     private static Application context;
 
     public static void init(Application app) {
-        context = app;
+        if (null == context)
+            context = app;
     }
 
     public static boolean putString(String key, String value) {
