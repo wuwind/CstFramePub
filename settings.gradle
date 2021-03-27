@@ -1,6 +1,8 @@
 rootProject.name = 'CstFrame'
 include ':app'
 include ':corelibrary'
+include ':utilcode'
+include ':recyclerviewlibrary'
 include ':business:fragment_home'
 include ':function:common'
 include ':zrouter:zrouter-compiler'
@@ -24,7 +26,7 @@ include ':business:fragment_mine'
 include ':business:register'
 include ':business:login'
 include ':business:register_api'
-//include ':business:mylibrary2'
+
 
 //include_with_api(':business:fragment_mine')
 include_with_api(':business:register')
@@ -217,4 +219,4 @@ def include_with_api(String moduleName) {
     include ":business:" + "$sdkName"
 }
 
-include ':utilcode'
+

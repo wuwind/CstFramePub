@@ -62,6 +62,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(path: ':function:common')
     implementation project(path: ':corelibrary')
+    implementation project(path: ':recyclerviewlibrary')
     annotationProcessor project(':zrouter:zrouter-compiler')
 
     //Jetpack相关
@@ -90,6 +91,4 @@ dependencies {
 // optional - Test helpers for LiveData
     testImplementation "android.arch.core:core-testing:$lifecycle_version"
 
-    //BRVAH
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
 }
