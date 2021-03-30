@@ -24,6 +24,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="login" />
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="btn_delete" />
+    <Button
+        android:id="@+id/btn_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="btn_get" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

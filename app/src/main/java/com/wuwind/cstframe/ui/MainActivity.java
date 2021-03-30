@@ -8,11 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
-import com.make.register.services.api.bean.UserBean;
-import com.make.register.services.api.common.RegisterUser;
 import com.wuwind.common.RouterPathConst;
 import com.wuwind.cstframe.R;
 import com.wuwind.cstframe.ui.bottom.BottomAdapter;
@@ -53,16 +49,6 @@ public class MainActivity extends AppCompatActivity {
 //        ButterKnife.bind(this);
         initBottom();
 //        initContentFrame();
-        findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                ZRouter.getInstance().build(RouterPathConst.PATH_ACTIVITY_LOGIN).navigation(MainActivity.this, 123);
-//                startActivityForResult(new Intent(MainActivity.this, MainActivity2.class), 123);
-                UserBean userBean = ZRouter.getInstance().navigation(RegisterUser.class).getUserName();
-                Toast.makeText(MainActivity.this, userBean.name, Toast.LENGTH_LONG).show();
-
-            }
-        });
 
     }
 
@@ -150,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 R.color.home_tab_text_selector,
                 DrawableUtil.getStateListDrawable(this, R.mipmap.a_tabbar_tab1, R.mipmap.a_tabbar_home_p)));
         titleObjectList.add(new TabTitle(
-                RouterPathConst.PATH_ACTIVITY_REGISTER,
+                RouterPathConst.PATH_FRAGMENT_TAB2,
                 R.string.tag_name_tab2,
                 R.color.home_tab_text_selector,
                 DrawableUtil.getStateListDrawable(this, R.mipmap.a_tabbar_tab2, R.mipmap.a_tabbar_trade_p)));

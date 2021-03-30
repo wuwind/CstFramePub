@@ -60,5 +60,5 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor project(':zrouter:zrouter-compiler')
 
-//    api project(':business:fragment_mine_api')
+    api project(':business:register_api')
 }

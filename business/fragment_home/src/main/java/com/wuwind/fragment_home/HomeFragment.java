@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.make.register.services.api.common.RegisterUser;
 import com.wuwind.common.RouterPathConst;
 import com.wuwind.zrouter_annotation.Autowired;
 import com.wuwind.zrouter_annotation.ZRoute;
@@ -64,7 +66,7 @@ public class HomeFragment extends Fragment {
         mBtnToOtherActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZRouter.getInstance().build(RouterPathConst.PATH_ACTIVITY_OTHER).navigation(getActivity(), 123);
+                ZRouter.getInstance().build(RouterPathConst.PATH_ACTIVITY_LOGIN).navigation(getActivity(), 123);
             }
         });
 
@@ -76,14 +78,21 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 //执行其他模块的业务逻辑
                 //方式1
-//                String accountNo = ZRouter.getInstance().navigation(MineOpenServiceApi.class).accountNo();
-//                Toast.makeText(getActivity(), accountNo, Toast.LENGTH_LONG).show();
-//                //方式2
-//                MineOpenServiceApi api = ZRouter.getInstance().navigation("MineOpenServiceApi");
-//                api.showAccountNo();
-//                //方式3
-//                MineOpenServiceApi mineOpenServiceApi = (MineOpenServiceApi) ZRouter.getInstance().build("MineOpenServiceApi").navigation();
-//                mineOpenServiceApi.showAccountNo();
+                String accountNo = ZRouter.getInstance().navigation(RegisterUser.class).getUserName().name;
+                Toast.makeText(getActivity(), accountNo, Toast.LENGTH_LONG).show();
+                //方式2
+//                RegisterUser api = ZRouter.getInstance().navigation("RegisterUser");
+//                api.getUserName();
+//                方式3
+//                RegisterUser mineOpenServiceApi = (RegisterUser) ZRouter.getInstance().build("RegisterUser").navigation();
+//                mineOpenServiceApi.getUserName();
+            }
+        });
+
+        root.findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ZRouter.getInstance().build(RouterPathConst.PATH_ACTIVITY_REGISTER).navigation();
             }
         });
 

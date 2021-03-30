@@ -3,10 +3,11 @@ package com.make.account.login.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.os.AsyncTask;
 
-import com.make.account.login.model.Callback;
+import com.make.account.login.db.AppDatabase;
+import com.make.account.login.db.UserDao;
 import com.make.account.login.model.User;
-import com.make.account.login.model.UserRepository;
 
 import java.util.List;
 
@@ -14,8 +15,7 @@ import java.util.List;
 /**
  * UserListViewModel
  * 注意，没有持有View层的任何引用
- * @author hufeiyang
- * @data 2021/1/24
+ *
  * @Description:
  */
 public class UserListViewModel extends ViewModel {
@@ -23,7 +23,7 @@ public class UserListViewModel extends ViewModel {
     /**
      * 用户信息
      */
-    private MutableLiveData<List<User>> userListLiveData;
+    private LiveData<List<User>> userListLiveData;
 
     /**
      * 进条度的显示
@@ -35,6 +35,11 @@ public class UserListViewModel extends ViewModel {
         loadingLiveData = new MutableLiveData<>();
     }
 
+    public UserListViewModel(UserDao userDao) {
+        userListLiveData = userDao.getAll();
+        loadingLiveData = new MutableLiveData<>();
+    }
+
     /**
      * 获取用户列表信息
      * 假装网络请求 2s后 返回用户信息
@@ -43,19 +48,35 @@ public class UserListViewModel extends ViewModel {
 
         loadingLiveData.setValue(true);
 
-        UserRepository.getUserRepository().getUsersFromServer(new Callback<List<User>>() {
+        new AsyncTask<Void, Void, User>() {
+
             @Override
-            public void onSuccess(List<User> users) {
+            protected void onPostExecute(User user) {
+                addUser(user);
                 loadingLiveData.setValue(false);
-                userListLiveData.setValue(users);
             }
 
             @Override
-            public void onFailed(String msg) {
-                loadingLiveData.setValue(false);
-                userListLiveData.setValue(null);
+            protected User doInBackground(Void... voids) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //假装从服务端获取的
+                User user = new User("user new", 22);
+                return user;
             }
-        });
+        }.execute();
+
+    }
+
+    public void addUser(User user) {
+        AppDatabase.getDatabase().userDao().insertAll(user);
+    }
+
+    public void deleteUser(User user) {
+        AppDatabase.getDatabase().userDao().delete(user);
     }
 
     /**
@@ -64,6 +85,7 @@ public class UserListViewModel extends ViewModel {
     public LiveData<List<User>> getUserListLiveData() {
         return userListLiveData;
     }
+
     public LiveData<Boolean> getLoadingLiveData() {
         return loadingLiveData;
     }

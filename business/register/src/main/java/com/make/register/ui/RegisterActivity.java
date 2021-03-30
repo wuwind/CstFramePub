@@ -12,11 +12,16 @@ import com.wuwind.zrouter_annotation.ZRoute;
 @ZRoute(RouterPathConst.PATH_ACTIVITY_REGISTER)
 public class RegisterActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         SPUtils.getInstance().put("register", "user123");
         ToastUtils.showShort(SPUtils.getInstance().getString("register"));
+
     }
+
+
+
 }

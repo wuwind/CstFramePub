@@ -14,7 +14,7 @@ class UserAdapter extends BaseQuickAdapter<User, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder viewHolder, User user) {
-        viewHolder.setText(R.id.tv_user_name, user.getName());
+        viewHolder.setText(R.id.tv_user_name, user.getName()+user.getUid());
         viewHolder.setText(R.id.tv_user_age, String.valueOf(user.getAge()));
     }
 
