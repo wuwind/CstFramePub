@@ -3,8 +3,8 @@ package com.make.account.login.view;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.leelen.community.accout.login.R;
-import com.make.account.login.model.User;
+import com.make.account.login.R;
+import com.make.dblibrary.model.User;
 
 class UserAdapter extends BaseQuickAdapter<User, BaseViewHolder> {
 

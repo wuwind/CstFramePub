@@ -3,7 +3,8 @@ package com.make.account.login.viewmodel;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.make.account.login.db.UserDao;
+import com.make.dblibrary.UserDao;
+
 
 public class UserViewModelFactory implements ViewModelProvider.Factory {
 

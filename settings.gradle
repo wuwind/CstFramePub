@@ -1,7 +1,8 @@
 rootProject.name = 'CstFrame'
 include ':app'
 include ':corelibrary'
-include ':utilcode'
+include ':utillibrary'
+include ':uilibrary'
 include ':recyclerviewlibrary'
 include ':business:fragment_home'
 include ':function:common'
@@ -220,3 +221,4 @@ def include_with_api(String moduleName) {
 }
 
 
+include ':dblibrary'

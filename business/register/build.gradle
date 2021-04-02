@@ -60,5 +60,5 @@ dependencies {
 //    implementation project(':business:mylibrary2')
     annotationProcessor project(':zrouter:zrouter-compiler')
 	implementation project(':business:register_api')
-	implementation project(':utilcode')
+	implementation project(':utillibrary')
 }

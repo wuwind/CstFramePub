@@ -1,4 +1,4 @@
-package com.make.account.login.model;
+package com.make.dblibrary.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

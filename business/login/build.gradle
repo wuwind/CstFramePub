@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         if (!isModule.toBoolean()) {
-            applicationId "com.leelen.community.accout.login"
+            applicationId "com.make.account.login"
         }
         minSdkVersion 19
         targetSdkVersion 28
@@ -19,7 +19,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [moduleName: project.getName(),"room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments = [moduleName: project.getName()]
             }
         }
     }
@@ -45,9 +45,9 @@ android {
         }
     }
 
-//    dataBinding {
-//        enabled = true
-//    }
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -61,7 +61,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(path: ':function:common')
-    implementation project(path: ':utilcode')
+    implementation project(path: ':uilibrary')
+    implementation project(path: ':utillibrary')
+    implementation project(path: ':dblibrary')
     implementation project(path: ':recyclerviewlibrary')
     annotationProcessor project(':zrouter:zrouter-compiler')
     implementation 'com.android.support:recyclerview-v7:28.0.0'
@@ -93,17 +95,4 @@ dependencies {
     testImplementation "android.arch.core:core-testing:$lifecycle_version"
 
 
-    def room_version = "1.1.1"
-
-    implementation "android.arch.persistence.room:runtime:$room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$room_version" // use kapt for Kotlin
-
-    // optional - RxJava support for Room
-    implementation "android.arch.persistence.room:rxjava2:$room_version"
-
-    // optional - Guava support for Room, including Optional and ListenableFuture
-    implementation "android.arch.persistence.room:guava:$room_version"
-
-    // Test helpers
-    testImplementation "android.arch.persistence.room:testing:$room_version"
 }

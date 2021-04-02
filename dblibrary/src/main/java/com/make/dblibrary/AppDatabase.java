@@ -1,4 +1,4 @@
-package com.make.account.login.db;
+package com.make.dblibrary;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.make.account.login.model.User;
+import com.make.dblibrary.model.User;
 import com.make.utilcode.util.LogUtils;
 import com.make.utilcode.util.Utils;
 
@@ -50,7 +50,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static RoomDatabase.Callback callback = new RoomDatabase.Callback() {
+    private static Callback callback = new Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
