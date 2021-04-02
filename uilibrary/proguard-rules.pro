@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#混淆， 保留R文件
+-keep class **.R$* {
+    *;
+}
+-keepclasseswithmembers class * {
+    @com.make.uilibrary.click.AClickStr <methods>;
+}
+-keepclasseswithmembers class * {
+    @com.make.uilibrary.click.AClick <methods>;
+}

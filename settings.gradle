@@ -14,6 +14,7 @@ include ':business:fragment_test'
 include ':business:fragment_test2'
 include ':business:activity_other'
 include ':business:fragment_mine'
+include ':business:serial'
 
 //include ':LeelenCore'
 //project(':LeelenCore').projectDir = new File('../LeelenCore/')
