@@ -223,3 +223,4 @@ def include_with_api(String moduleName) {
 
 
 include ':dblibrary'
+include ':httplibrary'

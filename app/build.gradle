@@ -70,6 +70,7 @@ dependencies {
         implementation project(':business:fragment_test2')
         implementation project(':business:register')
         implementation project(':business:login')
+        implementation project(':httplibrary')
     }
 }
 
