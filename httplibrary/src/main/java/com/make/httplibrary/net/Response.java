@@ -4,21 +4,22 @@ package com.make.httplibrary.net;
  * Created by hongfengwu on 2017/3/25.
  */
 
-public class Response<T>{
+public class Response<T> {
 
-    public boolean success;
-    public String msg;
+    public int code;
+    public String message;
     public String type;
-    public T info;
+    public T data;
 
     public Object tag;
 
     @Override
     public String toString() {
         return "Response{" +
-                "success=" + success +
-                ", msg='" + msg + '\'' +
-                ", info=" + info +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", type='" + type + '\'' +
+                ", data=" + data +
                 ", tag=" + tag +
                 '}';
     }

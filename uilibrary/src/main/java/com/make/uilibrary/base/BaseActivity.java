@@ -26,6 +26,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     private ExitReceiver exitReceiver;
     protected T binding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         beforeOnCreate();

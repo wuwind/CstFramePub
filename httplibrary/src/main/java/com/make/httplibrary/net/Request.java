@@ -41,7 +41,16 @@ public abstract class Request<T extends Response> {
         return this;
     }
 
+
     public void requset() {
+//        if(!NetUtil.isConnect(context)){
+//            ToastUtil.show("请检查网络");
+//            return;
+//        }
+        OkHttpClientManager.postAsyn(getUrl(), new Callback(getSuperclassTypeParameter(getClass()), unPostLoading, isShowToast), this, tag);
+    }
+
+    public void mapRequset() {
 //        if(!NetUtil.isConnect(context)){
 //            ToastUtil.show("请检查网络");
 //            return;
@@ -121,8 +130,8 @@ public abstract class Request<T extends Response> {
 //                onFinish(new LoadingResponse(false));
                 if (response instanceof Response) {
                     Response r = (Response) response;
-                    if (!r.success && !TextUtils.isEmpty(r.msg) && isShowToast) {
-                        ToastUtils.showShort(r.msg);
+                    if (r.code!=200 && !TextUtils.isEmpty(r.message) && isShowToast) {
+                        ToastUtils.showShort(r.message);
                     }
                 }
                 EventBus.getDefault().post(response);

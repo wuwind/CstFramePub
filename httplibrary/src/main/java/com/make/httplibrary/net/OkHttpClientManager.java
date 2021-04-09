@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -64,6 +65,8 @@ public class OkHttpClientManager {
                         .addHeader("Connection", "keep-alive")
                         .addHeader("Accept", "*/*")
                         .addHeader("x-requested-with", "XMLHttpRequest")
+                        .addHeader("sign", UUID.randomUUID().toString())
+                        .addHeader("token", UUID.randomUUID().toString())
                         .build();
                 return chain.proceed(request);
             }
@@ -237,6 +240,11 @@ public class OkHttpClientManager {
      */
     private void _postAsyn(String url, final ResultCallback callback, Object tag, Param... params) {
         Request request = buildPostRequest(url, params, tag);
+        deliveryResult(callback, request);
+    }
+
+    private void _postAsyn(String url, final ResultCallback callback, Object param, Object tag) {
+        Request request = buildPostRequest(url, param, tag);
         deliveryResult(callback, request);
     }
 
@@ -504,6 +512,9 @@ public class OkHttpClientManager {
         getInstance()._postAsyn(url, callback, params, tag);
     }
 
+    public static void postAsyn(String url, final ResultCallback callback, Object param, Object tag) {
+        getInstance()._postAsyn(url, callback, param, tag);
+    }
 
     public static Response post(String url, File[] files, String[] fileKeys, Param... params) throws IOException {
         return getInstance()._post(url, files, fileKeys, params);
@@ -706,6 +717,16 @@ public class OkHttpClientManager {
             builder.add(param.key, param.value);
         }
         RequestBody requestBody = builder.build();
+        return new Request.Builder()
+                .url(url)
+                .tag(tag)
+                .post(requestBody)
+                .build();
+    }
+
+    private Request buildPostRequest(String url, Object param, Object tag) {
+        String s = mGson.toJson(param);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), s);
         return new Request.Builder()
                 .url(url)
                 .tag(tag)
