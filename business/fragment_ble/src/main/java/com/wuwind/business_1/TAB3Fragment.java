@@ -22,6 +22,7 @@ import com.make.uilibrary.base.BaseFragment;
 import com.make.uilibrary.click.AClickStr;
 import com.make.utilcode.util.LogUtils;
 import com.make.utilcode.util.ToastUtils;
+import com.wuwind.business_1.bean.DeviceBean;
 import com.wuwind.business_1.databinding.FragmentTab3Binding;
 import com.wuwind.common.RouterPathConst;
 import com.wuwind.zrouter_annotation.ZRoute;
@@ -39,7 +40,7 @@ import static com.make.makeblelibrary.manager.EventManager.getLibraryEvent;
 public class TAB3Fragment extends BaseFragment<FragmentTab3Binding> implements BaseNotifyListener.DeviceListener, BaseNotifyListener.DeviceDataListener, BaseNotifyListener.ServiceListener {
 
     //    private Map<String, String> devices = new HashMap<>();
-    private List<BluetoothDevice> data = new ArrayList<>();
+    private List<DeviceBean> data = new ArrayList<>();
     private DataAdapter dataAdapter = new DataAdapter();
 
     public static TAB3Fragment newInstance(Bundle bundle) {
@@ -68,22 +69,30 @@ public class TAB3Fragment extends BaseFragment<FragmentTab3Binding> implements B
     public void onStart() {
         super.onStart();
         getLibraryEvent().register(this);
+        queryStatue();
     }
 
-    private void queryStatue(final String lockMacAddress) {
-        viewBinding.getRoot().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                XxlBle.blueWriteDataStr2Hex("550355", lockMacAddress);
-                queryStatue(lockMacAddress);
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            List<BluetoothDevice> connDeviceAll = XxlBle.getConnDeviceAll();
+                LogUtils.e("query ");
+            for (BluetoothDevice d : connDeviceAll) {
+                XxlBle.blueWriteDataStr2Hex("550355", d.getAddress());
             }
-        }, 5000);
+            queryStatue();
+        }
+    };
+
+    private void queryStatue() {
+        viewBinding.getRoot().postDelayed(runnable, 5000);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         getLibraryEvent().unregister(this);
+        viewBinding.getRoot().removeCallbacks(runnable);
     }
 
     @Override
@@ -93,7 +102,7 @@ public class TAB3Fragment extends BaseFragment<FragmentTab3Binding> implements B
     }
 
     @Override
-    protected void init() {
+    public void init() {
         viewBinding.rvData.setLayoutManager(new LinearLayoutManager(getActivity()));
         viewBinding.rvData.setAdapter(dataAdapter);
         dataAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -103,7 +112,7 @@ public class TAB3Fragment extends BaseFragment<FragmentTab3Binding> implements B
                 ToastUtils.showShort("stop");
                 String address = data.get(position).getAddress();
                 BluetoothDevice connDevice = XxlBle.getConnDevice(address);
-                LogUtils.e("runing "+XxlBle.runing(getActivity()));
+                LogUtils.e("runing " + XxlBle.runing(getActivity()));
                 if (null != connDevice) {
                     XxlBle.blueWriteDataStr2Hex("550155", address);
                 } else {
@@ -132,12 +141,20 @@ public class TAB3Fragment extends BaseFragment<FragmentTab3Binding> implements B
     @Override
     public void onDeviceScanner(List<BluetoothDevice> mDevices) {
         for (BluetoothDevice device : mDevices) {
-            if (device.getName() != null) {
-                LogUtils.e(device.getName());
-                if (device.getName().substring(0, 2).equals("MK") || device.getName().substring(0, 2).equals("WH")) {
-                    if (!data.contains(device)) {
-                        data.add(device);
+            LogUtils.e(device.getName());
+            if (device.getName() != null && (device.getName().startsWith("MK") || device.getName().startsWith("WH"))) {
+                boolean contains = false;
+                for (DeviceBean d : data) {
+                    if (d.getAddress().equals(device.getAddress())) {
+                        contains = true;
                     }
+                }
+                if (!contains) {
+                    DeviceBean bean = new DeviceBean();
+                    bean.setAddress(device.getAddress());
+                    bean.setName(device.getName());
+                    data.add(bean);
+                    XxlBle.blueStopScaner();
                 }
             }
         }
@@ -146,12 +163,12 @@ public class TAB3Fragment extends BaseFragment<FragmentTab3Binding> implements B
 
     @Override
     public void onDeviceConnectState(boolean connectState, Object tag) {
-        com.make.utilcode.util.LogUtils.e(tag.toString() + " connectState " + connectState);
+        LogUtils.e(tag.toString() + " connectState " + connectState);
     }
 
     @Override
     public void onDeviceServiceDiscover(List<BluetoothGattService> services, final Object tag) {
-        com.make.utilcode.util.LogUtils.e("onDeviceServiceDiscover");
+        LogUtils.e("onDeviceServiceDiscover");
         UUIDMessage uuidMessage = new UUIDMessage();//创建UUID的配置类
         uuidMessage.setCharac_uuid_service("0003CDD0-0000-1000-8000-00805F9B0131");
         uuidMessage.setCharac_uuid_write("0003CDD2-0000-1000-8000-00805F9B0131");
@@ -201,6 +218,12 @@ public class TAB3Fragment extends BaseFragment<FragmentTab3Binding> implements B
     @Override
     public void onDeviceNotifyMessage(CharacteristicValues characteristicValues, Object tag) {
         com.make.utilcode.util.LogUtils.e("onDeviceNotifyMessage " + characteristicValues.getHex2Str());
+        for (DeviceBean d : dataAdapter.getData()) {
+            if (d.getAddress().equals(tag.toString())) {
+                d.setDesc(characteristicValues.getHex2Str());
+                dataAdapter.notifyItemChanged(dataAdapter.getData().indexOf(d));
+            }
+        }
     }
 
     @Override

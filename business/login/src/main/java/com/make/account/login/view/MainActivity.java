@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity<ActivityLoginBinding> {
     private UserListViewModel mUserListViewModel;
     private UserAdapter mUserAdapter;
 
-    protected void init() {
+    public void init() {
         mUserAdapter = new UserAdapter(R.layout.item_user_mvvm);
         binding.rvUserList.setLayoutManager(new LinearLayoutManager(this));
         binding.rvUserList.setAdapter(mUserAdapter);

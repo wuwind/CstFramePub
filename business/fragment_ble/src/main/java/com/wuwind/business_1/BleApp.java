@@ -5,17 +5,20 @@ import android.app.Application;
 import android.os.Bundle;
 
 import com.make.makeblelibrary.XxlBle;
+import com.wuwind.common.IComponentApplication;
 
 /**
  * Created by wuhongfeng
  * data: 2021/4/9
  * desc:
  */
-public class BleApp extends Application {
+public class BleApp extends Application implements IComponentApplication {
+
+    Application.ActivityLifecycleCallbacks activityLifecycleCallbacks;
+
     @Override
-    public void onCreate() {
-        super.onCreate();
-        registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+    public void init(final Application application) {
+        activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
 
@@ -23,8 +26,8 @@ public class BleApp extends Application {
 
             @Override
             public void onActivityStarted(Activity activity) {
-                if(!XxlBle.runing(getApplicationContext())) {
-                    XxlBle.blueStartService(getApplicationContext());
+                if (!XxlBle.runing(application.getApplicationContext())) {
+                    XxlBle.blueStartService(application.getApplicationContext());
                 }
             }
 
@@ -52,6 +55,14 @@ public class BleApp extends Application {
             public void onActivityDestroyed(Activity activity) {
 
             }
-        });
+        };
+        application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
     }
+
+    @Override
+    public void deInit(Application application) {
+        application.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
+    }
+
+
 }

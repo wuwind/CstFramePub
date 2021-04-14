@@ -2,11 +2,15 @@ plugins {
     id 'com.android.library'
 }
 
+//根路径
+def ROOT_PATH = rootProject.rootDir.path
+def GROUP = "com.make.uilibrary"
+def SDK_VERSION_NAME = "1.0.0"
 android {
     compileSdkVersion rootProject.ext.compileSdk
 
     viewBinding {
-        enabled=true
+        enabled = true
     }
     defaultConfig {
         minSdkVersion rootProject.ext.minSdk
@@ -20,13 +24,23 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    //自定义aar名称
+    android.libraryVariants.all {
+        variant ->
+            variant.outputs.all {
+                def fileName = GROUP + "." + SDK_VERSION_NAME + ".aar"
+                outputFileName = fileName
+            }
     }
 }
 

@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
@@ -57,9 +57,9 @@ dependencies {
     implementation project(':function:common')
     implementation project(':blelibrary')
     implementation project(':utillibrary')
-    implementation project(':uilibrary')
+//    implementation project(':uilibrary')
     implementation project(':recyclerviewlibrary')
     annotationProcessor project(':zrouter:zrouter-compiler')
     implementation project(path: ':zrouter:zrouter-api')//使用指定的注解解析器
-
+//    implementation (name:'uilibrary-release', ext:'aar')
 }

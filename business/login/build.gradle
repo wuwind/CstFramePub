@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
 
     implementation "com.android.support:appcompat-v7:${rootProject.ext.support}"
     implementation "com.android.support:support-v4:${rootProject.ext.support}"
@@ -60,7 +60,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(path: ':function:common')
-    implementation project(path: ':uilibrary')
     implementation project(path: ':utillibrary')
     implementation project(path: ':dblibrary')
     implementation project(path: ':recyclerviewlibrary')

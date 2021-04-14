@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.common.BuildConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by wuhf on 2020/6/17.
@@ -11,6 +14,7 @@ import com.common.BuildConfig;
  */
 public class MyApplication extends Application implements IComponentApplication {
 
+    private List<IComponentApplication> applications;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -18,6 +22,7 @@ public class MyApplication extends Application implements IComponentApplication 
     }
 
     private void modulesApplicationInit() {
+        applications = new ArrayList<>();
         String[] MODULESLIST = BuildConfig.applications;
         for (String moduleImpl : MODULESLIST) {
             try {
@@ -25,6 +30,7 @@ public class MyApplication extends Application implements IComponentApplication 
                 Object obj = clazz.newInstance();
                 if (obj instanceof IComponentApplication) {
                     ((IComponentApplication) obj).init(this);
+                    applications.add((IComponentApplication) obj);
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -41,4 +47,15 @@ public class MyApplication extends Application implements IComponentApplication 
         //Module类的APP初始化
         modulesApplicationInit();
     }
+
+    @Override
+    public void deInit(Application application) {
+        if(null != applications) {
+            for (IComponentApplication iComponentApplication : applications) {
+                iComponentApplication.deInit(application);
+            }
+        }
+    }
+
+
 }

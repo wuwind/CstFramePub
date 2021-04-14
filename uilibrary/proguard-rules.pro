@@ -30,3 +30,9 @@
 -keepclasseswithmembers class * {
     @com.make.uilibrary.click.AClick <methods>;
 }
+
+-keep class com.make.uilibrary.**{*; }
+-keep class com.make.uilibrary.base.BaseFragment{*; }
+#-keep class com.make.uilibrary.base.**{*; } #指定保留该类不混淆
+#-keep class com.make.uilibrary.click.AClickStr{*; } #指定保留该类不混淆
+#-keep class com.make.uilibrary.click.AClick{*; } #指定保留该类不混淆

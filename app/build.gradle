@@ -66,7 +66,7 @@ dependencies {
         implementation project(':business:fragment_home')
         implementation project(':business:activity_other')
         implementation project(':business:fragment_mine')
-        implementation project(':business:fragment_test')
+        implementation project(':business:fragment_ble')
         implementation project(':business:fragment_test2')
         implementation project(':business:register')
         implementation project(':business:login')

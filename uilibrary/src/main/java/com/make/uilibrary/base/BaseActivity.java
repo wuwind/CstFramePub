@@ -11,11 +11,9 @@ import android.view.LayoutInflater;
 import android.viewbinding.ViewBinding;
 
 import com.make.uilibrary.click.OnClickUtils;
-import com.make.utilcode.util.ClassUtils;
+import com.make.utilcode.util.GenericUtil;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 
 /**
@@ -41,9 +39,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     protected T getBinding(){
         try {
-            Type superClass = getClass().getGenericSuperclass();
-            Type type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
-            Class<?> clazz = ClassUtils.getRawType(type);
+            Class clazz = GenericUtil.getSuperClassGenricType(getClass());
             Method method = clazz.getMethod("inflate", LayoutInflater.class);
             return (T) method.invoke(null, getLayoutInflater());
         } catch (Exception e) {
